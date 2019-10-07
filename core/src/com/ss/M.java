@@ -45,7 +45,7 @@ public class M {
       return z; //thau
     });
   }
-
+//abc xyz
   public static int check(int[] cards) {
     if (cards.length != 5)
       throw new InvalidParameterException("not enough card");
