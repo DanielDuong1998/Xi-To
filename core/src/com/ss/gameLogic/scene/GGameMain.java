@@ -43,12 +43,16 @@ public class GGameMain extends GScreen {
     handlingViewport();
 
     Image bg = GUI.createImage(atlas, "bg2");
+    Image panel = GUI.createImage(atlas, "panel");
     //Image table = GUI.createImage(atlas, "table");
     Gdx.app.log("debug", "x-y" + Static.ratioX + "-" + Static.ratioY);
     bg.setSize(bg.getWidth()* Static.ratioX, bg.getHeight()*Static.ratioY);
+    //panel.setSize(bg.getWidth()* Static.ratioX, bg.getHeight()*Static.ratioY);
     //table.setSize(table.getWidth()*Static.ratioXOfficial, table.getHeight()*Static.ratioYOfficial);
+    panel.setPosition(0, GMain.screenHeight - panel.getHeight());
     uiGroup.setSize(1280, 720);
     backgroundGroup.addActor(bg);
+    backgroundGroup.addActor(panel);
     //uiGroup.addActor(table);
     //table.setPosition(GMain.screenWidth/2, GMain.screenHeight/2, Align.center);
     //uiGroup.setScale(Static.ratioXOfficial, Static.ratioYOfficial);
@@ -80,33 +84,33 @@ public class GGameMain extends GScreen {
   private void initPositionCards(){
     positionCards = new Array<>();
     int numberPlayer = boardConfig.modePlay;
+    float delta2 = (GMain.screenHeight*16/9)/5;
+    float delta3 = (GMain.screenHeight*16/9)/15;
+    float deltaY = GMain.screenHeight/20;
+    float delta = (GMain.screenWidth - (float)GMain.screenHeight*16/9)/2;
     switch (numberPlayer){
       case 2: {
-        Vector2 position1 = new Vector2(GMain.screenWidth/2, GMain.screenHeight*3/4);
-        Vector2 position2 = new Vector2(GMain.screenWidth/2, GMain.screenHeight/4);
+        Vector2 position1 = new Vector2(delta + delta2 + delta3, GMain.screenHeight*3/4);
+        Vector2 position2 = new Vector2((float)GMain.screenHeight*16/9 - (delta + delta2 + delta3 + boardConfig.widthCard*0.4f), GMain.screenHeight/3 - deltaY);
         positionCards.add(position1, position2);
         break;
       }
       case 3: {
-        float delta = (GMain.screenWidth - (float)GMain.screenHeight*16/9)/2;
         Vector2 position1 = new Vector2(GMain.screenWidth/2, GMain.screenHeight*3/4);
-        Vector2 position2 = new Vector2(delta,GMain.screenHeight/3);
-        Vector2 position3 = new Vector2((float)GMain.screenHeight*16/9 + delta, GMain.screenHeight/3);
+        Vector2 position2 = new Vector2(delta + delta2 + delta3,GMain.screenHeight/3 - deltaY);
+        Vector2 position3 = new Vector2((float)GMain.screenHeight*16/9 - (delta + delta2 + delta3 + boardConfig.widthCard*0.4f), GMain.screenHeight/3 - deltaY);
         positionCards.add(position1, position2, position3);
         break;
       }
       case 4: {
-        float delta = (GMain.screenWidth - (float)GMain.screenHeight*16/9)/2;
-        Vector2 position1 = new Vector2(GMain.screenWidth/2, GMain.screenHeight*3/4);
-        Vector2 position2 = new Vector2(delta,GMain.screenHeight/2);
-        Vector2 position3 = new Vector2(GMain.screenWidth/2, GMain.screenHeight/4);
-        Vector2 position4 = new Vector2((float)GMain.screenHeight*16/9 + delta, GMain.screenHeight/2);
+        Vector2 position1 = new Vector2(delta + delta2 + delta3, GMain.screenHeight*3/4);
+        Vector2 position2 = new Vector2(delta + delta2 + delta3,GMain.screenHeight/3 - deltaY);
+        Vector2 position3 = new Vector2((float)GMain.screenHeight*16/9 - (delta + delta2 + delta3 + boardConfig.widthCard*0.4f), GMain.screenHeight/3 - deltaY);
+        Vector2 position4 = new Vector2((float)GMain.screenHeight*16/9 - (delta + delta2 + delta3 + boardConfig.widthCard*0.4f), GMain.screenHeight*3/4);
         positionCards.add(position1, position2, position3, position4);
         break;
       }
       case 5: {
-        float delta = (GMain.screenWidth - (float)GMain.screenHeight*16/9)/2;
-        float delta2 = (GMain.screenHeight*16/9)/5;
         Vector2 position1 = new Vector2(GMain.screenWidth/2, GMain.screenHeight*3/4);
         Vector2 position2 = new Vector2(delta + delta2,GMain.screenHeight*2/3);
         Vector2 position3 = new Vector2(delta + delta2,GMain.screenHeight/3);
@@ -117,14 +121,12 @@ public class GGameMain extends GScreen {
         break;
       }
       case 6: {
-        float delta = (GMain.screenWidth - (float)GMain.screenHeight*16/9)/2;
-        float delta2 = (GMain.screenHeight*16/9)/5;
-        Vector2 position1 = new Vector2(GMain.screenWidth/2, GMain.screenHeight*3/4);
-        Vector2 position2 = new Vector2(delta + delta2,GMain.screenHeight*2/3);
-        Vector2 position3 = new Vector2(delta + delta2,GMain.screenHeight/3);
-        Vector2 position4 = new Vector2(GMain.screenWidth/2, GMain.screenHeight/4);
-        Vector2 position5 = new Vector2((float)GMain.screenHeight*16/9 - delta - delta2, GMain.screenHeight/3);
-        Vector2 position6 = new Vector2((float)GMain.screenHeight*16/9 - delta - delta2, GMain.screenHeight*2/3);
+        Vector2 position1 = new Vector2(delta + delta2 + delta3, GMain.screenHeight*3/4);
+        Vector2 position2 = new Vector2(delta + delta2 - delta3,GMain.screenHeight/2);
+        Vector2 position3 = new Vector2(delta + delta2 + delta3,GMain.screenHeight/3 - deltaY);
+        Vector2 position4 = new Vector2((float)GMain.screenHeight*16/9 - (delta + delta2 + delta3 + boardConfig.widthCard*0.4f), GMain.screenHeight/3 - deltaY);
+        Vector2 position5 = new Vector2((float)GMain.screenHeight*16/9 + delta - delta2, GMain.screenHeight/2);
+        Vector2 position6 = new Vector2((float)GMain.screenHeight*16/9 - (delta + delta2 + delta3 + boardConfig.widthCard*0.4f), GMain.screenHeight*3/4);
         positionCards.add(position1, position2, position3, position4);
         positionCards.add(position5, position6);
         break;

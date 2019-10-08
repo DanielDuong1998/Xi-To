@@ -6,16 +6,23 @@ filter: Nearest,Nearest
 repeat: none
 bg
   rotate: false
-  xy: 2, 724
+  xy: 2, 848
   size: 1280, 720
   orig: 1280, 720
   offset: 0, 0
   index: -1
 bg1
   rotate: false
-  xy: 2, 2
+  xy: 2, 126
   size: 1280, 720
   orig: 1280, 720
+  offset: 0, 0
+  index: -1
+panel
+  rotate: false
+  xy: 2, 2
+  size: 1280, 122
+  orig: 1280, 122
   offset: 0, 0
   index: -1
 
