@@ -1,65 +1,101 @@
 package com.ss.gameLogic.objects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
-import com.ss.core.util.GUI;
+import com.ss.commons.Tweens;
+import com.ss.core.G.AB;
+import com.ss.core.G.G;
+
+import static com.badlogic.gdx.math.Interpolation.*;
 
 public class Card {
+    public static boolean isClicked = false;
     TextureAtlas cardAtlas;
     Image card, tileDown;
     Group group;
-    public int[] value;
-    int Key ;
+    int Key;
+    int valueName;
+    BoardGame board;
+    boolean isClick = false;
 
-    Card( TextureAtlas cardAtlas, Group group, int value){
+    Card( TextureAtlas cardAtlas, Group group, int valueName){
         this.cardAtlas = cardAtlas;
         this.group = group;
-        this.value =new int[]{value};
-        card = GUI.createImage(cardAtlas,""+this.value[0]);
-        card.setWidth(card.getWidth()*0.4f);
-        card.setHeight(card.getHeight()*0.4f);
-        this.group.addActor(card);
-        card.setAlign(Align.center);
-        card.setOrigin(Align.center);
-        card.setPosition(0,0);
-        //////// tileDown////////
-        tileDown = GUI.createImage(cardAtlas,"tiledown");
-        tileDown.setWidth(tileDown.getWidth()*0.4f);
-        tileDown.setHeight(tileDown.getHeight()*0.4f);
-        tileDown.setPosition(0,0);
-        tileDown.setOrigin(Align.center);
-        tileDown.setAlign(Align.center);
-        this.group.addActor(tileDown);
+        this.valueName = valueName;
+        card = (Image)G.c(Image.class).k(valueName+"").add(this.group).w2(0.4f).h2(0.4f).a(Align.center).o(Align.center).ub();
+        tileDown = (Image) G.c(Image.class).k("tiledown").add(this.group).w2(0.4f).h2(0.4f).a(Align.center).o(Align.center).ub();
 
 
     }
-    public void setVisibleTiledown(){
-        tileDown.setVisible(false);
+    public void setVisibleTiledown(boolean isVisible){
+        tileDown.setVisible(isVisible);
     }
     public void moveCard(float x,float y){
-        card.addAction(Actions.moveTo(x - card.getWidth()/2, y - card.getHeight()/2, boardConfig.durationDistrbute, Interpolation.slowFast));
-        tileDown.addAction(Actions.moveTo(x - tileDown.getWidth()/2, y - tileDown.getHeight()/2, boardConfig.durationDistrbute, Interpolation.slowFast));
+        card.addAction(AB.build(card).p(x - card.getWidth()/2,y - card.getHeight()/2).d(boardConfig.durationDistrbute).in(slowFast).done());
+        tileDown.addAction(AB.build(card).p(x - card.getWidth()/2,y - card.getHeight()/2).d(boardConfig.durationDistrbute).in(slowFast).done());
     }
-    public void scaleCard(){
-        card.addAction(Actions.scaleTo(0.3f,0.3f, boardConfig.durationDistrbute));
-        tileDown.addAction(Actions.scaleTo(0.3f,0.3f, boardConfig.durationDistrbute));
-
+    public void scaleCard(float ratioX, float ratioY){
+        card.addAction(Actions.scaleTo(ratioX,ratioY, boardConfig.durationDistrbute));
+        tileDown.addAction(Actions.scaleTo(ratioX,ratioY, boardConfig.durationDistrbute));
     }
     public void rotateCard(int angle){
         card.addAction(Actions.rotateTo(angle, boardConfig.durationDistrbute));
         tileDown.addAction(Actions.rotateTo(angle, boardConfig.durationDistrbute));
 
     }
-    public void setPosition(float x,float y, int align){
-        card.setPosition(x,y, align);
-        tileDown.setPosition(x,y, align);
+    public void setPosition(float x,float y){
+        G.b(card).p(x, y);
+        G.b(tileDown).p(x, y);
     }
     public void setKey(int id){
         Key=id;
+    }
+
+    public void flipCard(float x, float y){
+        G.b(card).sx(0);
+        tileDown.addAction(Actions.scaleTo(0,y,boardConfig.durationDistrbute));
+        Tweens.setTimeout(group, boardConfig.durationDistrbute, ()->{
+            card.addAction(Actions.scaleTo(x,y,boardConfig.durationDistrbute));
+        });
+    }
+
+    public void flipTileDown(float x, float y){
+        tileDown.setVisible(true);
+        G.b(tileDown).sx(0);
+        card.addAction(Actions.scaleTo(0, y, boardConfig.durationDistrbute));
+        Tweens.setTimeout(group, boardConfig.durationDistrbute, ()->{
+          tileDown.addAction(Actions.scaleTo(x, y, boardConfig.durationDistrbute));
+        });
+    }
+
+    public void addClick(BoardGame board){
+        this.board = board;
+        G.b(card).clk((e,x,y) -> {
+            if(!Card.isClicked){
+                Card.isClicked = true;
+                G.b(card).touch(Touchable.disabled).c(Color.WHITE);
+                isClick = true;
+                board.isClickCard();
+            }
+        });
+    }
+
+    public void addClickTileDown(BoardGame board){
+        this.board = board;
+        G.b(tileDown).clk((e,x,y) ->{
+           G.b(tileDown).touch(Touchable.disabled);
+           board.cancelHandEffect();
+           flipCard(1, 1);
+        });
+    }
+
+    public void setColor(Color color){
+        G.b(card).c(color);
     }
 
 }
