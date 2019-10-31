@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.ss.commons.Tweens;
+import com.ss.core.action.exAction.GArcMoveToAction;
 import com.ss.core.util.GUI;
 
 public class GreedilyAlgorithm {
@@ -17,6 +18,7 @@ public class GreedilyAlgorithm {
   long[] vt1, vt2, vt5, vt10, vt100, vt1k, vt10k, vt100k, vt1m;
   long[] vt10m, vt100m, vt1b, vt10b, vt100b;
   Array<Image> chips;
+  float moveX = 0, moveY = 0;
 
   public GreedilyAlgorithm(TextureAtlas textureAtlas, Group group){
     this.textureAtlas = textureAtlas;
@@ -115,7 +117,7 @@ public class GreedilyAlgorithm {
     }
   }
 
-  public void renderChip(long money, float x, float y){
+  public void renderChip(long money, float x, float y, boolean mode){
     greedily(money);
     if(chips != null){
       for(Image chip : chips){
@@ -137,8 +139,9 @@ public class GreedilyAlgorithm {
       }
       for(int i = 0; i < vt[1]; i++){
         Image chip = GUI.createImage(textureAtlas, "c" + vt[0]);
+        chip.setVisible(mode);
         chip.setSize(chip.getWidth()*0.5f, chip.getHeight()*0.5f);
-        chip.setPosition(dem*chip.getWidth() + x, dem1*chip.getHeight()*1.5f + y - i*5);
+        chip.setPosition(dem*chip.getWidth() + x, dem1*chip.getHeight()*1 + y - i*5);
         group.addActor(chip);
         chips.add(chip);
       }
@@ -151,12 +154,97 @@ public class GreedilyAlgorithm {
     }
   }
 
-  public void moveChips(float x, float y, float duaration, Interpolation interpolation, Runnable runnable){
+  public void moveChips(int type,float x, float y, float duaration, Interpolation interpolation, Runnable runnable){
+    if(boardConfig.modePlay==3){
+      if(type==0){
+        moveX = x-70;
+        moveY = y+200;
+      }else if(type==1){
+        moveX = x-20;
+        moveY = y-20;
+      }else if(type==2){
+        moveX = x+30;
+        moveY = y-20;
+      }
+    }else {
+      if(type==0){
+        moveX = x-70;
+        moveY = y+200;
+      }else if(type==1){
+        moveX = x-130;
+        moveY = y+20;
+      }else if(type==2){
+        moveX = x-20;
+        moveY = y-20;
+      }else if(type==3){
+        moveX = x+30;
+        moveY = y-20;
+      }else if(type==4){
+        moveX = x+100;
+        moveY = y+100;
+      }
+    }
     for(Image chip : chips){
-      Tweens.setTimeout(group, 0.1f*chips.indexOf(chip, true), ()->{
-        chip.addAction(Actions.moveTo(x, y, duaration, interpolation));
+      chip.setScale(2f);
+      Tweens.setTimeout(group, 0.05f*chips.indexOf(chip, true), ()->{
+        chip.setVisible(true);
+        chip.addAction(Actions.parallel(
+            GArcMoveToAction.arcMoveTo(x,y-(2*chips.indexOf(chip,true)),moveX,moveY,duaration, Interpolation.fastSlow),
+            Actions.scaleTo(1f,1f,duaration)
+        ));
       });
     }
-    group.addAction(Actions.sequence(Actions.delay(0.1f*chips.size + duaration), Actions.run(runnable)));
+    group.addAction(Actions.sequence(Actions.delay(0.05f*chips.size + duaration), Actions.run(runnable)));
   }
+  public void moveChipsWin(int type,float x, float y, float duaration, Interpolation interpolation, Runnable runnable){
+    if(boardConfig.modePlay==3){
+      if(type==0){
+        moveX = x-20;
+        moveY = y-150;
+      }else if(type==1){
+        moveX = x+30;
+        moveY = y+20;
+      }else if(type==2){
+        moveX = x-30;
+        moveY = y+20;
+      }
+    }else {
+      if(type==0){
+        moveX = x-20;
+        moveY = y-150;
+      }else if(type==1){
+        moveX = x+100;
+        moveY = y;
+      }else if(type==2){
+        moveX = x+10;
+        moveY = y+20;
+      }else if(type==3){
+        moveX = x-30;
+        moveY = y+20;
+      }else if(type==4){
+        moveX = x-70;
+        moveY = y-20;
+      }
+    }
+    for(Image chip : chips){
+      chip.setScale(2f);
+      Tweens.setTimeout(group, 0.05f*chips.indexOf(chip, true), ()->{
+        chip.setVisible(true);
+        chip.addAction(Actions.parallel(
+          GArcMoveToAction.arcMoveTo(x,y-(5*chips.indexOf(chip,true)),moveX,moveY,duaration, Interpolation.fastSlow),
+          Actions.scaleTo(1f,1f,duaration)
+        ));
+      });
+    }
+    group.addAction(Actions.sequence(Actions.delay(0.05f*chips.size + duaration), Actions.run(runnable)));
+  }
+
+  public void disposeChips(){
+    for(Image chip : chips){
+      chip.remove();
+      chip.clear();
+    }
+  }
+
+
 }

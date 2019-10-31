@@ -1,15 +1,18 @@
 package com.ss;
 
+import com.badlogic.gdx.Preferences;
 import com.platform.IPlatform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.ss.assetManager.X;
 import com.ss.core.exSprite.particle.GParticleSystem;
 import com.ss.core.util.GDirectedGame;
 import com.ss.core.util.GScreen;
 import com.ss.core.util.GStage;
 import com.ss.core.util.GStage.StageBorder;
-import com.ss.gameLogic.scene.GGameMain;
-import com.ss.gameLogic.scene.GMenu;
+import com.ss.gameLogic.effect.SoundEffect;
+import com.ss.gameLogic.objects.boardConfig;
+import com.ss.gameLogic.scene.GameStart;
 
 public class GMain
   extends GDirectedGame
@@ -24,6 +27,10 @@ public class GMain
   public static int screenId = -1;
   public static GScreen shooterTestScreen;
   public static final int testType = 2;
+
+  public static Preferences prefs;
+  public static long monney =0;
+  public static int checkFrist = 0;
 
 
   public static IPlatform platform;
@@ -86,11 +93,18 @@ public class GMain
   
   public static GScreen menuScreen()
   {
-    return new GGameMain();
+    return new GameStart();
   }
 
   public void create()
   {
+    X.init(X.ATLAS | X.SND | X.MUS);
+    SoundEffect.initSound();
+    int firstTime = -1;
+    prefs = Gdx.app.getPreferences("MyData");
+
+    monney = prefs.getLong("myMonney");
+    checkFrist = prefs.getInteger("checkFirst");
     this.init();
     this.setScreen(menuScreen());
   }

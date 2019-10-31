@@ -1,17 +1,10 @@
 
 atlasXiTo.png
-size: 2048,2048
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-bg
-  rotate: false
-  xy: 2, 848
-  size: 1280, 720
-  orig: 1280, 720
-  offset: 0, 0
-  index: -1
-bg1
+bg3
   rotate: false
   xy: 2, 126
   size: 1280, 720
@@ -23,25 +16,5 @@ panel
   xy: 2, 2
   size: 1280, 122
   orig: 1280, 122
-  offset: 0, 0
-  index: -1
-
-atlasXiTo2.png
-size: 2048,2048
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-bg2
-  rotate: false
-  xy: 2, 704
-  size: 1280, 720
-  orig: 1280, 720
-  offset: 0, 0
-  index: -1
-table
-  rotate: false
-  xy: 2, 2
-  size: 1108, 700
-  orig: 1108, 700
   offset: 0, 0
   index: -1

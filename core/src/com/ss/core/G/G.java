@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.ss.assetManager.XAssetsManager;
+import com.ss.assetManager.X;
 
 public class G {
   public static class Act {
@@ -49,6 +49,8 @@ public class G {
 
     public A c(Color c) {t.setColor(c); return this;} //setColor
 
+    public A v(boolean isVisible){t.setVisible(isVisible); return this;} //setVisible
+
     public A touch(Touchable tc) {t.setTouchable(tc); return this;} //setTouchable
 
     //WIDGET extended only
@@ -64,7 +66,7 @@ public class G {
     public A k(String key) {
       if (t instanceof Image) {
         Image i = (Image)t;
-        TextureRegion tg = XAssetsManager.getTextureRegion(key);
+        TextureRegion tg = X.getTextureRegion(key);
         i.setDrawable(new TextureRegionDrawable(tg));
         i.setSize(tg.getRegionWidth(), tg.getRegionHeight());
       }

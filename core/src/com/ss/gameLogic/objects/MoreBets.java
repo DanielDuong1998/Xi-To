@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Align;
 import com.ss.GMain;
+import com.ss.assetManager.X;
 import com.ss.commons.Tweens;
 import com.ss.core.G.G;
 import com.ss.core.exSprite.GShapeSprite;
@@ -17,103 +20,138 @@ import com.ss.core.util.GAssetsManager;
 import com.ss.core.util.GLayer;
 import com.ss.core.util.GStage;
 
+import java.text.DecimalFormat;
+
 public class MoreBets {
-    TextureAtlas uiAtlas;
-    BoardGame boardGame;
-    BitmapFont font;
-    Group group = new Group();
-    float xmin, xmax, y;
+  TextureAtlas uiAtlas;
+  BoardGame boardGame;
+  BitmapFont font;
+  Group group = new Group();
+  float xmin, xmax, y;
+  Label monney;
+  long monneyCuocMore = 0;
+  Image btnDone;
 
 
-    MoreBets(TextureAtlas uiAtlas, BoardGame boardGame){
-        GStage.addToLayer(GLayer.top,group);
-        this.uiAtlas = uiAtlas;
-        this.boardGame = boardGame;
-        initfont();
-        showbgMoreBets();
+  MoreBets(TextureAtlas uiAtlas, BoardGame boardGame){
+    GStage.addToLayer(GLayer.top,group);
+    this.uiAtlas = uiAtlas;
+    this.boardGame = boardGame;
+    initfont();
+    showbgMoreBets();
 
-    }
-    void showbgMoreBets(){
-        group.setPosition(GMain.screenWidth/2,GMain.screenHeight/2,Align.center);
-        group.setOrigin(Align.center);
-        final GShapeSprite blackOverlay = new GShapeSprite();
-        blackOverlay.createRectangle(true, -GMain.screenWidth/2,-GMain.screenHeight/2, GMain.screenWidth*2, GMain.screenHeight*2);
-        blackOverlay.setColor(0,0,0,0.8f);
-        group.addActor(blackOverlay);
-        loadSlider();
+  }
+  void showbgMoreBets(){
+    group.setPosition(GMain.screenWidth/2,GMain.screenHeight/2,Align.center);
+    group.setOrigin(Align.center);
+    final GShapeSprite blackOverlay = new GShapeSprite();
+    blackOverlay.createRectangle(true, -GMain.screenWidth/2,-GMain.screenHeight/2, GMain.screenWidth*2, GMain.screenHeight*2);
+    blackOverlay.setColor(0,0,0,0.8f);
+    group.addActor(blackOverlay);
+    loadSlider();
 
 
-    }
-    void loadSlider(){
-        /////// bar//////
-        Image sliderBar = (Image) G.c(Image.class).k("slideBar").add(group).ub();
-        G.b(sliderBar).p(sliderBar.getX()-sliderBar.getWidth()/2, sliderBar.getY() - sliderBar.getHeight()/2);
+  }
+  void loadSlider(){
+    /////// bar//////
+    Image sliderBar = (Image) G.c(Image.class).k("slideBar").add(group).ub();
+    G.b(sliderBar).p(sliderBar.getX()-sliderBar.getWidth()/2, sliderBar.getY() - sliderBar.getHeight()/2);
 
-        /////// coins ///////
-        Image sliderCoins = (Image)G.c(Image.class).k("slideCoin").add(group).ub();
-        float pX = -sliderBar.getWidth()/2+sliderCoins.getWidth()/2 - sliderCoins.getWidth()/2, pY = -sliderCoins.getHeight()/2;
-        G.b(sliderCoins).p(pX, pY);
+    /////// coins ///////
+    Image sliderCoins = (Image)G.c(Image.class).k("slideCoin").add(group).ub();
+    float pX = -sliderBar.getWidth()/2+sliderCoins.getWidth()/2 - sliderCoins.getWidth()/2, pY = -sliderCoins.getHeight()/2;
+    G.b(sliderCoins).p(pX, pY);
 
-        xmin = -sliderBar.getWidth()/2+sliderCoins.getWidth()/2;
-        xmax = 220;
-        /////// btn Done //////
-        Image btnDone = (Image)G.c(Image.class).k("btnDone").add(group).o(Align.center).ub();
-        pX = 0 - btnDone.getWidth()/2; pY = 200 - btnDone.getHeight()/2;
-        G.b(btnDone).p(pX, pY);
+    xmin = -sliderBar.getWidth()/2+sliderCoins.getWidth()/2;
+    xmax = 220;
+    /////// btn Done //////
+    btnDone = (Image)G.c(Image.class).k("btnDone").add(group).o(Align.center).ub();
+    pX = 0 - btnDone.getWidth()/2; pY = 200 - btnDone.getHeight()/2;
+    G.b(btnDone).p(pX, pY);
 
-        //////// event btn ////////
-        eventBtnDone(btnDone);
-        eventBtnCoins(sliderCoins);
+    //////// event btn ////////
+    btnDone.setTouchable(Touchable.disabled);
+    eventBtnDone(btnDone);
+    eventBtnCoins(sliderCoins);
 
-    }
-    void eventBtnCoins(Image btn){
-        btn.addListener(new DragListener(){
-            @Override
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                super.drag(event, x, y, pointer);
-                float detal = x - btn.getWidth()/2;
-                if(btn.getX() + detal < xmin - btn.getWidth()/2){
-                    btn.setX(xmin-btn.getWidth()/2);
-                }
-                else if(btn.getX() + detal > xmax){
-                    btn.setX(xmax);
-                }
-                else btn.moveBy(x-btn.getWidth()/2, 0);
-                Gdx.app.log("debug", "x: " + btn.getX());
-            }
+    //////// label //////////
+    monney = new Label("",new Label.LabelStyle(font,null));
+    monney.setPosition(0,100,Align.center);
+    monney.setAlignment(Align.center);
+    group.addActor(monney);
 
-            @Override
-            public void dragStop(InputEvent event, float x, float y, int pointer) {
-                super.dragStop(event, x, y, pointer);
-                float divindend = 8;
-                float part = 490/divindend;
-                int div = (int) ((btn.getX() + 270)/part);
-                Gdx.app.log("debug","div: " + div + " part: " + part);
-                if(btn.getX() == -270){
-                    btn.setX(xmin-btn.getWidth()/2);
-                }
-                else if(btn.getX() == 220|| div*490/divindend - 270 > 220)
-                    btn.setX(220);
-                else btn.setX(div*490/divindend - 270);
-            }
-        });
-    }
-    void eventBtnDone(Image btnDone){
-        G.b(btnDone).clk((e,x,y)->{
-            btnDone.addAction(Actions.sequence(
-                Actions.scaleTo(0.8f,0.8f,0.2f),
-                Actions.scaleTo(1f,1f,0.2f)
-            ));
-            Tweens.setTimeout(group,0.4f,()->{
-                boardGame.clickBetBtn();
-                group.clear();
-            });
-        });
+  }
+  void eventBtnCoins(Image btn){
+    btn.addListener(new DragListener(){
+      @Override
+      public void drag(InputEvent event, float x, float y, int pointer) {
+        super.drag(event, x, y, pointer);
+        float detal = x - btn.getWidth()/2;
+        if(btn.getX() + detal < xmin - btn.getWidth()/2){
+          btn.setX(xmin-btn.getWidth()/2);
+        }
+        else if(btn.getX() + detal > xmax){
+          btn.setX(xmax);
+        }
+        else btn.moveBy(x-btn.getWidth()/2, 0);
+        Gdx.app.log("debug", "x: " + btn.getX());
+      }
+
+      @Override
+      public void dragStop(InputEvent event, float x, float y, int pointer) {
+        super.dragStop(event, x, y, pointer);
+        float divindend = 8;
+        float part = 490/divindend;
+        int div = (int) ((btn.getX() + 270)/part);
+        Gdx.app.log("debug","div: " + div + " part: " + part);
+        if(btn.getX() == -270){
+          btn.setX(xmin-btn.getWidth()/2);
+        }
+        else if(btn.getX() == 220|| div*490/divindend - 270 > 220)
+          btn.setX(220);
+        else btn.setX(div*490/divindend - 270);
+
+        monneyCuocMore = (long)(boardConfig.moneyPlayer*(div/divindend));
+        monney.setText(""+FortmartPrice(monneyCuocMore));
+        if(monneyCuocMore > boardGame.moneyBasic || monneyCuocMore == boardConfig.moneyPlayer){
+          btnDone.setTouchable(Touchable.enabled);
+        }
+        else btnDone.setTouchable(Touchable.disabled);
+      }
+    });
+  }
+
+  void eventBtnDone(Image btnDone){
+    G.b(btnDone).clk((e,x,y)->{
+      btnDone.setTouchable(Touchable.disabled);
+      //sound
+      X.getSound("buttonClick").play();
+
+      btnDone.addAction(Actions.sequence(
+          Actions.scaleTo(0.8f,0.8f,0.2f),
+          Actions.scaleTo(1f,1f,0.2f)
+      ));
+      Tweens.setTimeout(group,0.4f,()->{
+        boardGame.clickDoneBtnMoreMoney(monneyCuocMore);
+        group.clear();
+      });
+    });
 
 //
-    }
-    void initfont(){
-        font = GAssetsManager.getBitmapFont("gold.fnt");
+  }
+//  void initfont(){
+//    font = GAssetsManager.getBitmapFont("gold.fnt");
+//
+//  }
 
-    }
+  private String FortmartPrice(Long Price) {
+
+    DecimalFormat mDecimalFormat = new DecimalFormat("###,###,###,###");
+    String mPrice = mDecimalFormat.format(Price);
+
+    return mPrice;
+  }
+  void initfont(){
+    font = GAssetsManager.getBitmapFont("gold.fnt");
+  }
 }

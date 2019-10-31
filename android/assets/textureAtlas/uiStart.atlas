@@ -1,0 +1,132 @@
+
+uiStart.png
+size: 2048,2048
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bgStart
+  rotate: false
+  xy: 2, 1272
+  size: 1280, 720
+  orig: 1280, 720
+  offset: 0, 0
+  index: -1
+btnBinhdan
+  rotate: false
+  xy: 1031, 994
+  size: 368, 276
+  orig: 368, 276
+  offset: 0, 0
+  index: -1
+btnDaiGia
+  rotate: false
+  xy: 454, 417
+  size: 368, 276
+  orig: 368, 276
+  offset: 0, 0
+  index: -1
+btnGetChip
+  rotate: false
+  xy: 1031, 758
+  size: 308, 82
+  orig: 308, 82
+  offset: 0, 0
+  index: -1
+btnHuy
+  rotate: false
+  xy: 824, 619
+  size: 171, 74
+  orig: 171, 74
+  offset: 0, 0
+  index: -1
+btnLeft
+  rotate: false
+  xy: 1654, 1510
+  size: 41, 60
+  orig: 41, 60
+  offset: 0, 0
+  index: -1
+btnOk
+  rotate: false
+  xy: 1736, 1714
+  size: 171, 74
+  orig: 171, 74
+  offset: 0, 0
+  index: -1
+btnReturn
+  rotate: false
+  xy: 824, 551
+  size: 104, 66
+  orig: 104, 66
+  offset: 0, 0
+  index: -1
+btnRight
+  rotate: false
+  xy: 372, 222
+  size: 41, 60
+  orig: 41, 60
+  offset: 0, 0
+  index: -1
+btnStart
+  rotate: false
+  xy: 1284, 1572
+  size: 450, 420
+  orig: 450, 420
+  offset: 0, 0
+  index: -1
+btnThuongGia
+  rotate: false
+  xy: 2, 2
+  size: 368, 280
+  orig: 368, 280
+  offset: 0, 0
+  index: -1
+btnTiPhu
+  rotate: false
+  xy: 1284, 1289
+  size: 368, 281
+  orig: 368, 281
+  offset: 0, 0
+  index: -1
+btnWatch
+  rotate: false
+  xy: 454, 322
+  size: 349, 93
+  orig: 349, 93
+  offset: 0, 0
+  index: -1
+frSelectPeo
+  rotate: false
+  xy: 2, 284
+  size: 450, 409
+  orig: 450, 409
+  offset: 0, 0
+  index: -1
+frameWatchAds
+  rotate: false
+  xy: 2, 695
+  size: 1027, 575
+  orig: 1027, 575
+  offset: 0, 0
+  index: -1
+frmAvt
+  rotate: false
+  xy: 1031, 842
+  size: 390, 150
+  orig: 390, 150
+  offset: 0, 0
+  index: -1
+text
+  rotate: false
+  xy: 1736, 1903
+  size: 303, 89
+  orig: 303, 89
+  offset: 0, 0
+  index: -1
+textChonBan
+  rotate: false
+  xy: 1736, 1790
+  size: 277, 111
+  orig: 277, 111
+  offset: 0, 0
+  index: -1

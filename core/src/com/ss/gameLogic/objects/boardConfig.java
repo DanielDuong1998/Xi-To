@@ -19,8 +19,13 @@ public class boardConfig {
     public static float playerY=GMain.screenHeight-231;
     public static int widthCard = 169;
     public static int heightCard = 231;
-    public static int modePlay = 6;
+    public static int modePlay = 5;
     public static float durationDistrbute = 0.2f;
+    public static int NumCard = 20;
+    public static long moneyBasic = 500;
+    public static long moneyPlayer = 10000000;
+    public static int timeShowFullScreen = 4;
+
 
 
 }

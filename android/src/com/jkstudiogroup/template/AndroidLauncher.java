@@ -1,7 +1,6 @@
 package com.jkstudiogroup.template;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -45,10 +45,10 @@ public class AndroidLauncher extends AndroidApplication {
 
 	private FirebaseAnalytics mFirebaseAnalytics;
 	private FirebaseRemoteConfig mFirebaseRemoteConfig;
-	private static final String ADMOB_APP_ID = "ca-app-pub-9108876944724815~8160462448";
+	private static final String ADMOB_APP_ID = "ca-app-pub-9108876944724815~4617642918";
 	private static final String ADMOB_BANNER_ID = "ca-app-pub-3940256099942544/6300978111";
-	private static final String ADMOB_FULLSCREEN_ID = "ca-app-pub-3940256099942544/1033173712";
-	private static final String ADMOB_VIDEO_ID = "ca-app-pub-3940256099942544/5224354917";
+	private static final String ADMOB_FULLSCREEN_ID = "ca-app-pub-9108876944724815/9726838678";
+	private static final String ADMOB_VIDEO_ID = "ca-app-pub-9108876944724815/1616414360";
 
 	private IPlatform.OnVideoRewardClosed videoRewardCallback = null;
 	boolean bannerVisible = false;
@@ -64,6 +64,16 @@ public class AndroidLauncher extends AndroidApplication {
 			@Override
 			public void log(String str) {
 				Log.i("Game", str);
+			}
+
+			@Override
+			public void crashKey(String key, String value) {
+				Crashlytics.setString(key, value);
+			}
+
+			@Override
+			public void crashLog(String log) {
+				Crashlytics.log(log);
 			}
 
 			@Override
@@ -238,7 +248,7 @@ public class AndroidLauncher extends AndroidApplication {
 			mFirebaseRemoteConfig.fetch(cacheExpiration)
 							.addOnCompleteListener(this, new OnCompleteListener<Void>() {
 								@Override
-								public void onComplete(@NonNull Task<Void> task) {
+								public void onComplete( Task<Void> task) {
 									if (task.isSuccessful()) {
 										Log.i("remoteconfig", "ok");
 										mFirebaseRemoteConfig.activateFetched();
@@ -423,7 +433,7 @@ public class AndroidLauncher extends AndroidApplication {
 			FirebaseInstanceId.getInstance().getInstanceId()
 							.addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
 								@Override
-								public void onComplete(@NonNull Task<InstanceIdResult> task) {
+								public void onComplete( Task<InstanceIdResult> task) {
 									//Log.d("IID_TOKEN", task.getResult().getToken());
 								}
 							});

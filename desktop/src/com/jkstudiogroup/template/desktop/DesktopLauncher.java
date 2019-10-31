@@ -17,6 +17,16 @@ public class DesktopLauncher {
 			}
 
 			@Override
+			public void crashKey(String key, String value) {
+
+			}
+
+			@Override
+			public void crashLog(String log) {
+
+			}
+
+			@Override
 			public String GetDefaultLanguage() {
 				return null;
 			}

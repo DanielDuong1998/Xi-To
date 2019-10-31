@@ -3,6 +3,9 @@ package com.platform;
 public interface IPlatform {
     public void log(String str);
 
+    public void crashKey(String key, String value);
+    public void crashLog(String log);
+
     public String GetDefaultLanguage();
     public boolean isVideoRewardReady();
     public void ShowVideoReward(OnVideoRewardClosed callback);
